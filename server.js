@@ -1,4 +1,4 @@
-require ('dotenv').config();
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -9,11 +9,12 @@ const contactRoutes = require('./src/routes/contactRoutes');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./src/swaggerOptions');
 const userRoutes = require('./src/routes/userRoutes');
-const settingsRoutes = require('./src/routes/settingsRoutes'); 
+const settingsRoutes = require('./src/routes/settingsRoutes');
 
 const app = express();
 connectDb();
 
+// CORS Middleware
 app.use(cors({
   origin: 'https://crm-frontend-orpin-ten.vercel.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -23,16 +24,22 @@ app.use(cors({
 app.use(helmet());
 app.use(express.json());
 
+// Swagger Docs
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+// Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/leads', leadRoutes);
 app.use('/api/contacts', contactRoutes);
-app.use("/api/users", userRoutes);
+app.use('/api/users', userRoutes);
 app.use('/api', settingsRoutes);
 
-app.use((err, req, res , next)=>{
-  res.status(500).json({message: err.message});
-})
+// Error Handling Middleware
+app.use((err, req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://crm-frontend-orpin-ten.vercel.app');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.status(500).json({ message: err.message });
+});
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, ()=> console.log(`Server is running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

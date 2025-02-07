@@ -15,7 +15,8 @@ const swaggerOptions = {
     servers: [
       {
         // url: 'http://localhost:5000',
-         url: 'https://crm-backend-ts06.onrender.com'
+         url: 'https://crm-backend-3b53.onrender.com'
+       
       }
     ],
     components: {

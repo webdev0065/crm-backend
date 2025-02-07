@@ -14,11 +14,18 @@ const settingsRoutes = require('./src/routes/settingsRoutes');
 const app = express();
 connectDb();
 
-app.use(cors());
+app.use(cors({
+  origin: '*',  // Allows requests from any origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  credentials: true
+}));
 app.use(helmet());
 app.use(express.json());
 
-app.use('/api-docs', cors(), swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.options('*', cors());
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/leads', leadRoutes);

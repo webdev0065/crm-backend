@@ -14,11 +14,11 @@ const settingsRoutes = require('./src/routes/settingsRoutes');
 const app = express();
 connectDb();
 
-app.use((err, req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://crm-frontend-orpin-ten.vercel.app');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.status(500).json({ message: err.message });
-});
+app.use(cors({
+  origin: 'https://crm-frontend-orpin-ten.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
 
 app.use(helmet());
 app.use(express.json());
